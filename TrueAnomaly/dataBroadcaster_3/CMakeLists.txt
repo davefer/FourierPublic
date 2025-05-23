@@ -4,7 +4,8 @@ project(DataBroadcaster)
 
 add_executable(DataBroadcaster 
                 src/main.cpp
-                src/databroadcasterapp.cpp)
+                src/databroadcasterapp.cpp
+                src/serialreader.cpp)
 
 add_custom_command(TARGET DataBroadcaster POST_BUILD
     COMMAND chmod +x $<TARGET_FILE:DataBroadcaster>
