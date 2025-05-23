@@ -1,32 +1,25 @@
-import serial
-
-print('Starting serial data transmission.') 
+from transmitter import SerialTransmitter
+from listener import Listener
+from imupacket import ImuPacket
 
 # Create some dummy data
-data = "Hello from Simulator."
+# txData = b"Hello from Simulator."
+rxData = b"undefined"
+
+tx = SerialTransmitter
+rx = Listener
+imuPacket = ImuPacket
 
 while True:
+    tx.txUart(imuPacket.Data)
+    rxData = rx.listen()
 
-    try: 
-        # Open and prep serial port
-        tty = serial.Serial('/dev/tty1', 921600)
-        tty.flushInput()
-        tty.flushOutput()
+    if rxData == imuPacket.Data:
+        print("Success")
 
-        # Send data to UART (tty1)
-        tty.write(data)
-        
-        # Log activity
-        print('Data sent: {data}')
+    else:
+        print("Failure")
 
-        tty.close()
 
-    except serial.SerialException as expt:
-        # Log exception
-        print('Error: Unable to open serial port')
-
-    except Exception as expt:
-        # Log Exception
-        print('An unexpected error has occurred.')
 
 

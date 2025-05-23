@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/DataParser.dir/src/main.cpp.o CMakeFiles/DataParser.dir/src/dataparserapp.cpp.o -o DataParser 

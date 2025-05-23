@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/DataBroadcaster.dir/src/main.cpp.o CMakeFiles/DataBroadcaster.dir/src/databroadcasterapp.cpp.o -o DataBroadcaster 

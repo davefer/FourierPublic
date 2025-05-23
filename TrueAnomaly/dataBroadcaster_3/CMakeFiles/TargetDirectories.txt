@@ -1,0 +1,3 @@
+/home/davefer/src/FourierPublic/TrueAnomaly/dataBroadcaster_3/CMakeFiles/DataBroadcaster.dir
+/home/davefer/src/FourierPublic/TrueAnomaly/dataBroadcaster_3/CMakeFiles/edit_cache.dir
+/home/davefer/src/FourierPublic/TrueAnomaly/dataBroadcaster_3/CMakeFiles/rebuild_cache.dir
