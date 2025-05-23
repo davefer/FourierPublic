@@ -1,3 +1,0 @@
-/home/davefer/src/FourierPublic/TrueAnomaly/dataParser_1/CMakeFiles/DataParser.dir
-/home/davefer/src/FourierPublic/TrueAnomaly/dataParser_1/CMakeFiles/edit_cache.dir
-/home/davefer/src/FourierPublic/TrueAnomaly/dataParser_1/CMakeFiles/rebuild_cache.dir
