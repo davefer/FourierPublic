@@ -2,7 +2,12 @@
 #include <iostream>
 #include <jsoncpp/json/json.h>
 #include <string>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <thread>
+#include <unistd.h>
+#include <cstring>
 
 #include "databroadcasterapp.h"
 #include "sighandler.h"
@@ -68,36 +73,43 @@ void DataBroadcasterApp::_txNetworkPacket()
 {
     cout << "Inside _txNetworkPacket method." << endl;
 
-    // TODO: Transmit network message (UDP) containing data packet read from UART    int socket_fd;
-    // struct sockaddr_in broadcast_address;
-    // const char* message = "Hello, Broadcast!";
-    // int broadcast_permission = 1;
+    // TODO: Transmit network message (UDP) containing data packet read from UART    
+    int socket_fd;
+    struct sockaddr_in broadcast_address;
+    string message = "Hello, Broadcast!";
+    int broadcast_permission = 1;
 
     // // Create socket
-    // socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
-    // if (socket_fd < 0) {
-    //     std::cerr << "Socket creation failed" << std::endl;
-    //     return -1;
-    // }
+    socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (socket_fd < 0) 
+    {
+        std::cerr << "Socket creation failed" << std::endl;
+        return;
+    }
 
-    // // Set socket options to allow broadcasting
-    // if (setsockopt(socket_fd, SOL_SOCKET, SO_BROADCAST, &broadcast_permission, sizeof(broadcast_permission)) < 0) {
-    //     std::cerr << "setsockopt failed" << std::endl;
-    //     close(socket_fd);
-    //     return -1;
-    // }
+    // Set socket options to allow broadcasting
+    if (setsockopt(socket_fd, SOL_SOCKET, SO_BROADCAST, &broadcast_permission, sizeof(broadcast_permission)) < 0)
+    {
+        std::cerr << "setsockopt failed" << std::endl;
+        close(socket_fd);
+        return;
+    }
 
-    // // Configure broadcast address
-    // memset(&broadcast_address, 0, sizeof(broadcast_address));
-    // broadcast_address.sin_family = AF_INET;
-    // broadcast_address.sin_addr.s_addr = inet_addr("127.255.255.255");
-    // broadcast_address.sin_port = htons(12345); // Choose a port
+    // Configure broadcast address
+    memset(&broadcast_address, 0, sizeof(broadcast_address));
+    broadcast_address.sin_family = AF_INET;
+    broadcast_address.sin_addr.s_addr = inet_addr("127.255.255.255");
+    broadcast_address.sin_port = htons(12345); // Choose a port
 
-    // // Send the broadcast message
-    // if (sendto(socket_fd, message, strlen(message), 0, (struct sockaddr*)&broadcast_address, sizeof(broadcast_address)) < 0) {
-    //     std::cerr << "sendto failed" << std::endl;
-    //     close(socket_fd);
-    //     return -1;
+    // Send the broadcast message
+    if (sendto(socket_fd, message.c_str(), strlen(message.c_str()), 0, (struct sockaddr*)&broadcast_address, sizeof(broadcast_address)) < 0) 
+    {
+        std::cerr << "sendto failed" << std::endl;
+        close(socket_fd);
+        return;
+    }
+
+    cout << "Message successfully broadcast." << endl;
 
     return;
 }
