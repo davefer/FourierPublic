@@ -5,6 +5,7 @@
 #include <thread>
 
 #include "databroadcasterapp.h"
+#include "sighandler.h"
 
 using namespace std;
 
@@ -29,10 +30,12 @@ DataBroadcasterApp::DataBroadcasterApp()
 
 void DataBroadcasterApp::_readUartTask()
 {
+    string dev("/dev/tty2");
+
     while(true)
     {
-        // Will be moved later
-        SerialReader::ReadUart();
+        
+        SerialReader::ReadUart("/dev/tty2");
     }
 }
 
