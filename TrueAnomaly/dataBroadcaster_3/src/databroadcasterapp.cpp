@@ -32,6 +32,9 @@ void DataBroadcasterApp::_readUartTask()
 {
     string dev("/dev/tty2");
 
+    // TODO: This thread task should perhaps use a timer to call ReadUart()
+    //       every 80ms.
+
     while(true)
     {
         
@@ -43,6 +46,19 @@ void DataBroadcasterApp::_sendNetBcastTask()
 {
     while(true)
     {
-        cout << "Sending network message" << endl;
+        // TODO: This thread task should perhaps watch a flag to react immediately
+        //       When data is available to broadcast (instead of guesstimating if
+        //       new data is available).
+        if( _dataRcvd == true)
+        {
+            cout << "Sending network message" << endl;
+            // TODO: Broadcast network packet on localhost
+
+        }
     }
+}
+
+void _txNetworkPacket()
+{
+    // TODO: Transmit network message (UDP) containing data packet read from UART
 }

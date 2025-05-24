@@ -15,7 +15,7 @@ int SerialReader::ReadUart(const char* serialDev)
 {
     cout << "SerialReader::ReadUart() called." << endl;
     
-    int serial_port = open(serialDev, O_RDWR); // Replace /dev/ttyUSB0 with your UART device
+    int serial_port = open(serialDev, O_RDWR); 
     if (serial_port < 0) {
         std::cerr << "Error opening serial port: " << strerror(errno) << std::endl;
         return -1;

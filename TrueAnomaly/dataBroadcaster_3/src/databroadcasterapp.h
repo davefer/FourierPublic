@@ -12,6 +12,7 @@ public:
 
 private:
     // static SerialReader reader;
+    static bool _dataRcvd;
     static void _readUartTask();
     static void _sendNetBcastTask();
     void _readCfg(string cfgPathFile);
