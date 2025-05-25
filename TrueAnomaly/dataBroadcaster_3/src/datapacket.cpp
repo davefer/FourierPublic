@@ -33,3 +33,5 @@ uint8_t DataPacket::fromByteArray(array<byte, 20>& byte_array)
     return 20;
 }
 
+
+

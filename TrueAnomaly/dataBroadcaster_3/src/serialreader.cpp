@@ -17,7 +17,7 @@ int SerialReader::ReadUart(const char* serialDev, DataPacket& data)
 {
     // cout << "SerialReader::ReadUart() called." << endl;
     
-    int serial_port = open(serialDev, O_RDWR); 
+    int serial_port = open(serialDev, O_RDONLY); 
     if (serial_port < 0) {
         cout << "Error opening serial port: " << strerror(errno) << endl;
         close(serial_port);
