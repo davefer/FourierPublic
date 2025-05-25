@@ -46,7 +46,7 @@ void DataBroadcasterApp::_readUartTask()
         // sleep for 80 ms before checking to see if new data has arrived
         this_thread::sleep_for(chrono::milliseconds(80));
 
-        SerialReader::ReadUart("/dev/tty2");
+        SerialReader::ReadUart("/dev/tty2", dataPacket);
     }
 }
 
@@ -57,6 +57,7 @@ void DataBroadcasterApp::_sendNetBcastTask()
         if(_dataRcvd == true)
         {
             cout << "Sending network message" << endl;
+
             // TODO: Broadcast network packet on localhost
             _txNetworkPacket(dataPacket);
             _dataRcvd = false;
@@ -67,7 +68,7 @@ void DataBroadcasterApp::_sendNetBcastTask()
     }
 }
 
-void DataBroadcasterApp::_txNetworkPacket(DataPacket& dataPacket)
+void DataBroadcasterApp::_txNetworkPacket(DataPacket& data)
 {
     cout << "Inside _txNetworkPacket method." << endl;
 
@@ -76,12 +77,14 @@ void DataBroadcasterApp::_txNetworkPacket(DataPacket& dataPacket)
     struct sockaddr_in broadcast_address;
 
     // TODO: Change the object being sent to a byte array from DataPacket
-    string message = "Hello, Broadcast!";
-    array<byte, 20> dataBuffer = {byte{0x54},byte{0x45},byte{0x53},byte{0x54}};
-    // dataPacket.toByteArray(dataBuffer);
-    char charBuffer[256];
-    memcpy(charBuffer, &dataBuffer, 20);
-    cout << "Testing send with: " << charBuffer << endl;
+    // string message = "Hello, Broadcast!";
+    array<byte, 20> dataBuffer; // = {byte{0x54},byte{0x45},byte{0x53},byte{0x54}};
+    data.toByteArray(dataBuffer);
+    
+    // TODO: Remove these lines that were only for testing
+    // byte charBuffer[256];
+    // memcpy(charBuffer, &dataBuffer, 20);
+    cout << "Testing send with: " << &dataBuffer << endl;
 
     int broadcast_permission = 1;
 
@@ -108,7 +111,7 @@ void DataBroadcasterApp::_txNetworkPacket(DataPacket& dataPacket)
     broadcast_address.sin_port = htons(5005); // Choose a port
 
     // Send the broadcast message
-    if (sendto(socket_fd, charBuffer, strlen(message.c_str()), 0, (struct sockaddr*)&broadcast_address, sizeof(broadcast_address)) < 0) 
+    if (sendto(socket_fd, &dataBuffer, 20, 0, (struct sockaddr*)&broadcast_address, sizeof(broadcast_address)) < 0) 
     {
         std::cerr << "sendto failed" << std::endl;
         close(socket_fd);

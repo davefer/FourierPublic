@@ -9,7 +9,7 @@ using namespace std;
 class DataBroadcasterApp
 {
     friend SerialReader;
-    
+
 public:
     DataBroadcasterApp();
 
@@ -18,7 +18,7 @@ private:
     static bool _dataRcvd;
     static void _readUartTask();
     static void _sendNetBcastTask();
-    static void _txNetworkPacket(DataPacket& dataPacket);
+    static void _txNetworkPacket(DataPacket& data);
     void _readCfg(string cfgPathFile);
     string serialDev;
     static DataPacket dataPacket;

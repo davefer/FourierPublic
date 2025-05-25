@@ -4,6 +4,6 @@
 class SerialReader
 {
 public:
-    static int ReadUart(const char* serialDev);
+    static int ReadUart(const char* serialDev, DataPacket& data);
     static void _cfgSerial(char* serialDev);
 };
