@@ -5,6 +5,7 @@ project(DataBroadcaster)
 add_executable(DataBroadcaster 
                 src/databroadcasterapp.cpp
                 src/serialreader.cpp
+                src/datapacket.cpp
                 src/main.cpp
               )
 

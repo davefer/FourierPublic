@@ -10,11 +10,13 @@
 #include <cstring>
 
 #include "databroadcasterapp.h"
+#include "datapacket.h"
 #include "sighandler.h"
 
 using namespace std;
 
 bool DataBroadcasterApp::_dataRcvd = false;
+DataPacket DataBroadcasterApp::dataPacket;
 
 DataBroadcasterApp::DataBroadcasterApp()
 {
@@ -27,10 +29,10 @@ DataBroadcasterApp::DataBroadcasterApp()
 
     cout << "Monitoring UART on device: " << serialDev << endl;
 
-    thread readThread(_readUartTask);
+    thread readThread(_readUartTask); // TODO: Turn this back on. 
     thread bcastThread(_sendNetBcastTask);
 
-    readThread.join();
+    readThread.join(); // TODO: Turn this back on too.
     bcastThread.join();
 
 }
@@ -39,12 +41,11 @@ void DataBroadcasterApp::_readUartTask()
 {
     string dev("/dev/tty2");
 
-    // TODO: This thread task should perhaps use a timer to call ReadUart()
-    //       every 80ms.
-
     while(true)
     {
-        
+        // sleep for 80 ms before checking to see if new data has arrived
+        this_thread::sleep_for(chrono::milliseconds(80));
+
         SerialReader::ReadUart("/dev/tty2");
     }
 }
@@ -53,14 +54,11 @@ void DataBroadcasterApp::_sendNetBcastTask()
 {
     while(true)
     {
-        // sleep for 80 ms before checking to see if new data has arrived
-        this_thread::sleep_for(chrono::milliseconds(80));
-
         if(_dataRcvd == true)
         {
             cout << "Sending network message" << endl;
             // TODO: Broadcast network packet on localhost
-            _txNetworkPacket();
+            _txNetworkPacket(dataPacket);
             _dataRcvd = false;
         }
 
@@ -69,17 +67,25 @@ void DataBroadcasterApp::_sendNetBcastTask()
     }
 }
 
-void DataBroadcasterApp::_txNetworkPacket()
+void DataBroadcasterApp::_txNetworkPacket(DataPacket& dataPacket)
 {
     cout << "Inside _txNetworkPacket method." << endl;
 
     // TODO: Transmit network message (UDP) containing data packet read from UART    
     int socket_fd;
     struct sockaddr_in broadcast_address;
+
+    // TODO: Change the object being sent to a byte array from DataPacket
     string message = "Hello, Broadcast!";
+    array<byte, 20> dataBuffer = {byte{0x54},byte{0x45},byte{0x53},byte{0x54}};
+    // dataPacket.toByteArray(dataBuffer);
+    char charBuffer[256];
+    memcpy(charBuffer, &dataBuffer, 20);
+    cout << "Testing send with: " << charBuffer << endl;
+
     int broadcast_permission = 1;
 
-    // // Create socket
+    // Create socket
     socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
     if (socket_fd < 0) 
     {
@@ -98,11 +104,11 @@ void DataBroadcasterApp::_txNetworkPacket()
     // Configure broadcast address
     memset(&broadcast_address, 0, sizeof(broadcast_address));
     broadcast_address.sin_family = AF_INET;
-    broadcast_address.sin_addr.s_addr = inet_addr("127.255.255.255");
-    broadcast_address.sin_port = htons(12345); // Choose a port
+    broadcast_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    broadcast_address.sin_port = htons(5005); // Choose a port
 
     // Send the broadcast message
-    if (sendto(socket_fd, message.c_str(), strlen(message.c_str()), 0, (struct sockaddr*)&broadcast_address, sizeof(broadcast_address)) < 0) 
+    if (sendto(socket_fd, charBuffer, strlen(message.c_str()), 0, (struct sockaddr*)&broadcast_address, sizeof(broadcast_address)) < 0) 
     {
         std::cerr << "sendto failed" << std::endl;
         close(socket_fd);

@@ -1,12 +1,14 @@
+#include <array>
 #include <iostream>
 #include <fcntl.h>   
 #include <termios.h>
 #include <iostream>  
-#include <string>    
+#include <string> 
 #include <cstring>   
 #include <errno.h>
 #include <unistd.h>
 
+#include "databroadcasterapp.h"
 #include "serialreader.h"
 
 using namespace std;
@@ -22,6 +24,15 @@ int SerialReader::ReadUart(const char* serialDev)
     }
 
     char read_buf[256];
+    // TODO: Remove dummy data below.
+    array<byte, 20> packetBuffer = {byte{0x54},byte{0x45},byte{0x53},byte{0x54},byte{0x01},
+                                    byte{0x02},byte{0x03},byte{0x04},byte{0x01},byte{0x02},
+                                    byte{0x03},byte{0x04},byte{0x01},byte{0x02},byte{0x03},
+                                    byte{0x04},byte{0x01},byte{0x02},byte{0x03},byte{0x04}};
+    DataBroadcasterApp::dataPacket.fromByteArray(packetBuffer);
+    DataBroadcasterApp::_dataRcvd = true;
+    // TODO: End dummy data
+
     memset(&read_buf, '\0', sizeof(read_buf));
     int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
     if (num_bytes < 0) {

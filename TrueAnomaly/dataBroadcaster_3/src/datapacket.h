@@ -1,3 +1,6 @@
+#pragma once 
+
+#include <array>
 #include <cstddef>
 #include <stdint.h>
 
@@ -15,4 +18,7 @@ public:
     float x_GyroRate;
     float y_GyroRate;
     float z_GyroRate;
+
+    uint8_t toByteArray(array<byte, 20>& byte_array);
+    uint8_t fromByteArray(array<byte, 20>& byte_array);
 };
