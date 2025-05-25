@@ -14,6 +14,6 @@ class Listener:
 
         print(f"Listening on {UDP_IP}:{UDP_PORT}")
 
-        while True:
-            data, addr = sock.recvfrom(1024)  # Buffer size is 1024 bytes
-            print(f"Received message: {data} from {addr}")
+        # while True:
+        data, addr = sock.recvfrom(1024)  # Buffer size is 1024 bytes
+        print(f"Received message: {data} from {addr}")

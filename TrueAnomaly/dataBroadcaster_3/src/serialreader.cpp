@@ -15,33 +15,41 @@ using namespace std;
 
 int SerialReader::ReadUart(const char* serialDev, DataPacket& data)
 {
-    cout << "SerialReader::ReadUart() called." << endl;
+    // cout << "SerialReader::ReadUart() called." << endl;
     
     int serial_port = open(serialDev, O_RDWR); 
     if (serial_port < 0) {
-        std::cerr << "Error opening serial port: " << strerror(errno) << std::endl;
+        cout << "Error opening serial port: " << strerror(errno) << endl;
+        close(serial_port);
         return -1;
     }
 
-    char read_buf[256];
+    cout << "Serial port " << serial_port << " has been opened." << endl;
+
+    char char_buff[20];
+    array<byte, 20> read_buff;
             
     // TODO: Remove dummy data below.
-    array<byte, 20> packetBuffer = {byte{0x54},byte{0x45},byte{0x53},byte{0x54},byte{0x01},
-                                    byte{0x02},byte{0x03},byte{0x04},byte{0x01},byte{0x02},
-                                    byte{0x03},byte{0x04},byte{0x01},byte{0x02},byte{0x03},
-                                    byte{0x04},byte{0x01},byte{0x02},byte{0x03},byte{0x04}};
-    data.fromByteArray(packetBuffer);
-    DataBroadcasterApp::_dataRcvd = true;
+    // array<byte, 20> packetBuffer = {byte{0x54},byte{0x45},byte{0x53},byte{0x54},byte{0x01},
+    //                                 byte{0x02},byte{0x03},byte{0x04},byte{0x01},byte{0x02},
+    //                                 byte{0x03},byte{0x04},byte{0x01},byte{0x02},byte{0x03},
+    //                                 byte{0x04},byte{0x01},byte{0x02},byte{0x03},byte{0x04}};
+    // data.fromByteArray(packetBuffer);
+    // DataBroadcasterApp::_dataRcvd = true;
     // TODO: End dummy data
 
-    memset(&read_buf, '\0', sizeof(read_buf));
-    int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
+    memset(&char_buff, '\0', sizeof(char_buff));
+    memset(&read_buff, '\0', sizeof(read_buff));
+    int num_bytes = read(serial_port, char_buff, sizeof(read_buff));
+
     if (num_bytes < 0) {
-        std::cerr << "Error reading: " << strerror(errno) << std::endl;
+        cout << "Error reading: " << strerror(errno) << endl;
     } else if (num_bytes > 0) {
-        cout << "Read " << num_bytes << " bytes. Received message: " << read_buf << std::endl;
+        // TODO: Make this line work or remove it.
+        cout << "Read " << num_bytes << " bytes. Received message: " << char_buff << endl;
+        data.fromByteArray(read_buff);
     } else {
-        cout << "No data available" << std::endl;
+        cout << "No data available" << endl;
     }
 
     close(serial_port);

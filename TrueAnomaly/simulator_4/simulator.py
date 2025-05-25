@@ -12,7 +12,8 @@ imuPacket = ImuPacket
 
 while True:
     tx.txUart(imuPacket.Data)
-    rxData = rx.listen()
+    # tx.txUart("TEST")
+    #rxData = rx.listen()
 
     if rxData == imuPacket.Data:
         print("Success")

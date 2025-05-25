@@ -20,7 +20,7 @@ DataPacket DataBroadcasterApp::dataPacket;
 
 DataBroadcasterApp::DataBroadcasterApp()
 {
-    cout << "DataBroadcaster contructor" << endl;
+    //cout << "DataBroadcaster contructor" << endl;
 
     // Load cfg file
     // _readCfg("../../config.json");
@@ -29,24 +29,28 @@ DataBroadcasterApp::DataBroadcasterApp()
 
     cout << "Monitoring UART on device: " << serialDev << endl;
 
-    thread readThread(_readUartTask); // TODO: Turn this back on. 
+    thread readThread(_readUartTask); 
     thread bcastThread(_sendNetBcastTask);
-
-    readThread.join(); // TODO: Turn this back on too.
+    readThread.join();
     bcastThread.join();
-
 }
 
 void DataBroadcasterApp::_readUartTask()
 {
     string dev("/dev/tty2");
+    // cout << "In _readUartTask()" << endl;
 
     while(true)
     {
         // sleep for 80 ms before checking to see if new data has arrived
-        this_thread::sleep_for(chrono::milliseconds(80));
+        // this_thread::sleep_for(chrono::milliseconds(80));
 
-        SerialReader::ReadUart("/dev/tty2", dataPacket);
+        int numBytes = 0;
+        numBytes = SerialReader::ReadUart("/dev/tty2", dataPacket);
+        if(numBytes > 0)
+        {
+            _dataRcvd = true;
+        }
     }
 }
 
@@ -64,13 +68,13 @@ void DataBroadcasterApp::_sendNetBcastTask()
         }
 
         // TODO:  Remove this line that sets _dataRcvd = true
-        _dataRcvd = true;
+        // _dataRcvd = true;
     }
 }
 
 void DataBroadcasterApp::_txNetworkPacket(DataPacket& data)
 {
-    cout << "Inside _txNetworkPacket method." << endl;
+    // cout << "Inside _txNetworkPacket method." << endl;
 
     // TODO: Transmit network message (UDP) containing data packet read from UART    
     int socket_fd;
@@ -84,7 +88,7 @@ void DataBroadcasterApp::_txNetworkPacket(DataPacket& data)
     // TODO: Remove these lines that were only for testing
     // byte charBuffer[256];
     // memcpy(charBuffer, &dataBuffer, 20);
-    cout << "Testing send with: " << &dataBuffer << endl;
+    // cout << "Testing send with: " << &dataBuffer << endl;
 
     int broadcast_permission = 1;
 
@@ -92,7 +96,7 @@ void DataBroadcasterApp::_txNetworkPacket(DataPacket& data)
     socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
     if (socket_fd < 0) 
     {
-        std::cerr << "Socket creation failed" << std::endl;
+        cout << "Socket creation failed" << endl;
         return;
     }
 
