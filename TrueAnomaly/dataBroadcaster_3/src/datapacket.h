@@ -1,3 +1,12 @@
+/**
+ * @file datapacket.h
+ * @brief This file is the main header file for the DataPacket class of the
+ * TrueAnomaly assessment project
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
+
 #pragma once 
 
 #include <array>

@@ -1,3 +1,11 @@
+/**
+ * @file databroadcaster.cpp
+ * @brief This file is the implementation of the DataBroadcasterApp class.
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
+
 #include <fstream>
 #include <iostream>
 #include <jsoncpp/json/json.h>
@@ -62,12 +70,12 @@ void DataBroadcasterApp::_sendNetBcastTask()
         {
             cout << "Sending network message" << endl;
 
-            // TODO: Broadcast network packet on localhost
+            // Broadcast network packet on localhost
             _txNetworkPacket(dataPacket);
             _dataRcvd = false;
         }
 
-        // TODO:  Remove this line that sets _dataRcvd = true
+        // TODO:  For debug purposes: this line that sets _dataRcvd = true
         // _dataRcvd = true;
     }
 }
@@ -76,16 +84,15 @@ void DataBroadcasterApp::_txNetworkPacket(DataPacket& data)
 {
     // cout << "Inside _txNetworkPacket method." << endl;
 
-    // TODO: Transmit network message (UDP) containing data packet read from UART    
+    // Transmit network message (UDP) containing data packet read from UART    
     int socket_fd;
     struct sockaddr_in broadcast_address;
 
-    // TODO: Change the object being sent to a byte array from DataPacket
-    // string message = "Hello, Broadcast!";
+    // Change the object being sent to a byte array from DataPacket
     array<byte, 20> dataBuffer; // = {byte{0x54},byte{0x45},byte{0x53},byte{0x54}};
     data.toByteArray(dataBuffer);
     
-    // TODO: Remove these lines that were only for testing
+    // TODO: For debug purposes: these lines that were only for testing
     // byte charBuffer[256];
     // memcpy(charBuffer, &dataBuffer, 20);
     // cout << "Testing send with: " << &dataBuffer << endl;

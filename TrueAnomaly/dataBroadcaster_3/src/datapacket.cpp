@@ -1,3 +1,11 @@
+/**
+ * @file datapacket.cpp
+ * @brief This file is the implementation file for the DataPacket class.
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
+
 #include "datapacket.h"
 #include <string.h>
 

@@ -1,5 +1,12 @@
-#pragma once
+/**
+ * @file serialreader.h
+ * @brief This is the main header file for the SerialReader class.
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
 
+#pragma once
 
 class SerialReader
 {

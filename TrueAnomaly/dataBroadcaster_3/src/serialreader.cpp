@@ -1,4 +1,12 @@
-#include <array>
+/**
+ * @file serialreader.cpp
+ * @brief This is the implementation file for the SerialReader class.
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
+
+ #include <array>
 #include <iostream>
 #include <fcntl.h>   
 #include <termios.h>
@@ -29,7 +37,7 @@ int SerialReader::ReadUart(const char* serialDev, DataPacket& data)
     char char_buff[20];
     array<byte, 20> read_buff;
             
-    // TODO: Remove dummy data below.
+    // TODO: For debug purposes: dummy data below.
     // array<byte, 20> packetBuffer = {byte{0x54},byte{0x45},byte{0x53},byte{0x54},byte{0x01},
     //                                 byte{0x02},byte{0x03},byte{0x04},byte{0x01},byte{0x02},
     //                                 byte{0x03},byte{0x04},byte{0x01},byte{0x02},byte{0x03},
@@ -45,7 +53,7 @@ int SerialReader::ReadUart(const char* serialDev, DataPacket& data)
     if (num_bytes < 0) {
         cout << "Error reading: " << strerror(errno) << endl;
     } else if (num_bytes > 0) {
-        // TODO: Make this line work or remove it.
+        // Report number of bytes received
         cout << "Read " << num_bytes << " bytes. Received message: " << char_buff << endl;
         data.fromByteArray(read_buff);
     } else {

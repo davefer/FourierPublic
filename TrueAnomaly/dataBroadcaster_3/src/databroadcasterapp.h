@@ -1,4 +1,12 @@
-#pragma once
+/**
+ * @file databroadcaster.h
+ * @brief This is the main header file for the DataBroadcasterApp class.
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
+
+ #pragma once
 
 #include <string>
 #include "datapacket.h"

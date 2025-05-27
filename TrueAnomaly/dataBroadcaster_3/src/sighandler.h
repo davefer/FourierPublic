@@ -1,4 +1,10 @@
-
+/**
+ * @file signalhandler.h
+ * @brief This file contains a signal handler routine.
+ * 
+ * @author David Ferreira
+ * @date 2025-05-27
+ */
 
 #include <iostream>
 #include <signal.h>
