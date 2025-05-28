@@ -1,12 +1,13 @@
-# This test file will write / read to a COM port on windows
-# This will help us know if the problem is specific to Linux or not.
+# This test file will write / read to a COM port on Windows but not on
+# Ubuntu Linux against "/dev/tty2". Why? 
+
 
 import serial
 
 while True:
 
     try:
-        ser = serial.Serial('COM3', 9600, timeout = 1)
+        ser = serial.Serial('/dev/tty2', 9600, timeout = 1)
 
         if ser:
             print("Connected to: ", ser.name)
